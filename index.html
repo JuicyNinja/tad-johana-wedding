@@ -473,7 +473,7 @@ footer{position:relative;padding-top:3rem}
 .frank-stage{position:relative;display:flex;justify-content:center}
 .frank-glow{position:absolute;inset:-14%;border-radius:50%;pointer-events:none;
   background:radial-gradient(closest-side,rgba(227,190,106,.22),rgba(227,190,106,.06) 55%,transparent 72%);filter:blur(6px)}
-.frank-frame{position:relative;width:min(100%,22rem);aspect-ratio:9/16;max-height:78svh;border:1px solid rgba(227,190,106,.55);
+.frank-frame{position:relative;width:min(100%,24rem);aspect-ratio:3/4;max-height:78svh;border:1px solid rgba(227,190,106,.55);
   background:rgba(6,11,31,.55);overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.5),0 0 0 6px rgba(6,11,31,.35);
   transition:box-shadow .6s ease}
 .frank.playing .frank-frame{box-shadow:0 0 0 1px rgba(227,190,106,.8),0 0 46px rgba(227,190,106,.22),0 30px 70px rgba(0,0,0,.55)}
@@ -510,7 +510,7 @@ footer{position:relative;padding-top:3rem}
 @media (max-width:860px){
   .frank{padding:4.2rem 0 4.6rem}
   .frank-wrap{grid-template-columns:1fr;gap:2.2rem}
-  .frank-frame{width:min(100%,19rem);max-height:70svh}
+  .frank-frame{width:min(100%,21rem);max-height:70svh}
   .frank-copy,.frank-copy .sec-title,.frank-copy .sec-script,.frank-copy .diamond{text-align:center}
   .frank-text{margin:0 auto}
   .frank-hint{justify-content:center}
@@ -635,7 +635,7 @@ footer{position:relative;padding-top:3rem}
     <div class="frank-stage">
       <div class="frank-glow" aria-hidden="true"></div>
       <div class="frank-frame" id="frank-frame">
-        <video id="frank-video" src="assets/video/frank-placeholder.mp4" playsinline preload="metadata" poster="assets/img/frank-poster-placeholder.jpg" aria-label="Frank"></video>
+        <video id="frank-video" src="assets/video/frank.mp4" playsinline preload="metadata" poster="assets/img/frank-poster.jpg" aria-label="Frank"></video>
         <button type="button" class="frank-tap" id="frank-tap" hidden>
           <span class="ring" aria-hidden="true"></span>
           <span class="lbl"><span data-es>Toca para escuchar a Frank</span><span data-en>Tap to hear from Frank</span></span>
