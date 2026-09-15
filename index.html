@@ -461,6 +461,76 @@ footer{position:relative;padding-top:3rem}
 .detail::before{box-shadow:0 0 0 4px rgba(227,190,106,.18),0 0 14px rgba(227,190,106,.55)}
 .cd-cell{transition:border-color .4s ease,box-shadow .4s ease}
 .cd-cell:hover{border-color:var(--gold);box-shadow:0 0 22px rgba(227,190,106,.25)}
+
+/* ---------- Frank: a full-width interlude between the story and the details ---------- */
+.frank{padding:5.5rem 0 6rem;position:relative;
+  background:linear-gradient(180deg,rgba(6,11,31,0) 0%,rgba(6,11,31,.38) 18%,rgba(6,11,31,.38) 82%,rgba(6,11,31,0) 100%)}
+.frank::before,.frank::after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:min(92vw,64rem);height:1px;
+  background:linear-gradient(90deg,transparent,rgba(227,190,106,.55) 20%,rgba(227,190,106,.55) 80%,transparent)}
+.frank::before{top:0}.frank::after{bottom:0}
+.frank-wrap{position:relative;z-index:2;max-width:64rem;margin:0 auto;padding:0 1.9rem;
+  display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:3.2rem;align-items:center}
+.frank-stage{position:relative;display:flex;justify-content:center}
+.frank-glow{position:absolute;inset:-14%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(227,190,106,.22),rgba(227,190,106,.06) 55%,transparent 72%);filter:blur(6px)}
+.frank-frame{position:relative;width:min(100%,22rem);aspect-ratio:9/16;max-height:78svh;border:1px solid rgba(227,190,106,.55);
+  background:rgba(6,11,31,.55);overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.5),0 0 0 6px rgba(6,11,31,.35);
+  transition:box-shadow .6s ease}
+.frank.playing .frank-frame{box-shadow:0 0 0 1px rgba(227,190,106,.8),0 0 46px rgba(227,190,106,.22),0 30px 70px rgba(0,0,0,.55)}
+.frank-frame video{width:100%;height:100%;object-fit:cover;display:block}
+.frank-tap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
+  border:0;cursor:pointer;background:rgba(6,11,31,.5);color:var(--cream);font:500 .78rem/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase}
+.frank-tap[hidden]{display:none}
+.frank-tap .ring{width:4.6rem;height:4.6rem;border-radius:50%;border:1px solid var(--gold);position:relative;
+  background:rgba(6,11,31,.4);box-shadow:0 0 0 0 rgba(227,190,106,.45);animation:ringpulse 2.2s ease-out infinite}
+.frank-tap .ring::after{content:"";position:absolute;left:54%;top:50%;transform:translate(-50%,-50%);
+  border-left:1.15rem solid var(--gold);border-top:.7rem solid transparent;border-bottom:.7rem solid transparent}
+@keyframes ringpulse{0%{box-shadow:0 0 0 0 rgba(227,190,106,.45)}100%{box-shadow:0 0 0 22px rgba(227,190,106,0)}}
+.frank-tap .lbl{max-width:14rem;text-align:center}
+.frank-replay{position:absolute;left:50%;bottom:1rem;transform:translateX(-50%);z-index:2;border:1px solid var(--line);
+  background:rgba(6,11,31,.65);color:var(--cream);font:500 .72rem/1 var(--sans);letter-spacing:.16em;padding:.6rem .9rem;cursor:pointer;
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.frank-replay:hover{border-color:var(--gold);color:var(--gold)}
+.frank-replay[hidden]{display:none}
+.frank-copy{text-align:left}
+.frank-copy .sec-title,.frank-copy .sec-script{text-align:left}
+.frank-copy .diamond{text-align:left;margin:1.2rem 0 1.6rem}
+.frank-eyebrow{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:.9rem}
+.frank-text{font-family:var(--body);font-size:1.15rem;line-height:1.75;color:var(--cream-dim);max-width:34ch}
+.frank-hint{display:flex;align-items:center;gap:.7rem;margin-top:1.6rem;font-size:.78rem;letter-spacing:.12em;color:var(--cream-dim);opacity:.85}
+.frank-hint.live{color:var(--gold)}
+.eq{display:inline-flex;align-items:flex-end;gap:2px;height:14px}
+.eq i{display:block;width:3px;height:30%;background:var(--gold);opacity:.55}
+.eq.on i{animation:eq .9s ease-in-out infinite alternate;opacity:1}
+.eq.on i:nth-child(2){animation-delay:-.3s}.eq.on i:nth-child(3){animation-delay:-.6s}.eq.on i:nth-child(4){animation-delay:-.15s}
+@keyframes eq{from{height:20%}to{height:100%}}
+.flo-frank-l{left:calc(50% - 32rem - 200px);top:12%;width:200px}
+.flo-frank-r{right:calc(50% - 32rem - 190px);bottom:10%;width:190px}
+@media (max-width:1180px){.flo-frank-l{left:-4vw;width:16vw}.flo-frank-r{right:-4vw;width:15vw}}
+@media (max-width:860px){
+  .frank{padding:4.2rem 0 4.6rem}
+  .frank-wrap{grid-template-columns:1fr;gap:2.2rem}
+  .frank-frame{width:min(100%,19rem);max-height:70svh}
+  .frank-copy,.frank-copy .sec-title,.frank-copy .sec-script,.frank-copy .diamond{text-align:center}
+  .frank-text{margin:0 auto}
+  .frank-hint{justify-content:center}
+  .flo-frank-l{left:-12vw;top:2%;width:30vw}.flo-frank-r{right:-12vw;bottom:2%;width:28vw}
+}
+
+/* now-playing pill for Frank's song */
+.song-pill{position:fixed;left:50%;bottom:1.2rem;transform:translate(-50%,0);z-index:35;display:flex;align-items:center;gap:.8rem;
+  padding:.6rem .6rem .6rem 1rem;border:1px solid rgba(227,190,106,.55);background:rgba(6,11,31,.82);color:var(--cream);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 12px 30px rgba(0,0,0,.45);
+  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;animation:pillin .6s cubic-bezier(.2,.7,.3,1)}
+.song-pill[hidden]{display:none}
+.song-pill .song-name{white-space:nowrap}
+@media (max-width:480px){.song-pill{font-size:.68rem;gap:.6rem;padding:.5rem .5rem .5rem .8rem;bottom:.9rem;max-width:calc(100vw - 2rem)}}
+@keyframes pillin{from{opacity:0;transform:translate(-50%,16px)}to{opacity:1;transform:translate(-50%,0)}}
+.song-pill button{border:1px solid var(--line);background:none;color:var(--gold);font:500 .7rem/1 var(--sans);letter-spacing:.14em;padding:.5rem .7rem;cursor:pointer}
+.song-pill button:hover{border-color:var(--gold)}
+.song-pill button[aria-pressed="true"] .play,.song-pill button[aria-pressed="false"] .pause{display:none}
+.song-pill.paused .eq i{animation-play-state:paused;opacity:.5}
+@media (prefers-reduced-motion:reduce){.frank-tap .ring,.eq.on i{animation:none}}
 </style>
 </head>
 <body>
@@ -556,6 +626,55 @@ footer{position:relative;padding-top:3rem}
     </div>
   </div>
 </section>
+
+<!-- ========== 2b · FRANK ========== -->
+<section id="frank" class="frank" aria-labelledby="frank-title">
+  <div class="flo flo-frank-l breathe" data-speed=".1" aria-hidden="true"><img src="assets/img/orchid.webp" alt="" loading="lazy" decoding="async"></div>
+  <div class="flo flo-frank-r flip breathe" data-speed=".08" aria-hidden="true"><img src="assets/img/rose.webp" alt="" loading="lazy" decoding="async"></div>
+  <div class="frank-wrap">
+    <div class="frank-stage">
+      <div class="frank-glow" aria-hidden="true"></div>
+      <div class="frank-frame" id="frank-frame">
+        <video id="frank-video" src="assets/video/frank-placeholder.mp4" playsinline preload="metadata" poster="assets/img/frank-poster-placeholder.jpg" aria-label="Frank"></video>
+        <button type="button" class="frank-tap" id="frank-tap" hidden>
+          <span class="ring" aria-hidden="true"></span>
+          <span class="lbl"><span data-es>Toca para escuchar a Frank</span><span data-en>Tap to hear from Frank</span></span>
+        </button>
+        <button type="button" class="frank-replay" id="frank-replay" hidden>
+          <span data-es>Ver de nuevo</span><span data-en>Watch again</span>
+        </button>
+      </div>
+    </div>
+    <div class="frank-copy">
+      <p class="frank-eyebrow"><span data-es>Una invitación muy especial</span><span data-en>A very special invitation</span></p>
+      <h2 class="sec-title" id="frank-title"><span data-es>Nuestro hijo Frank</span><span data-en>Our son Frank</span></h2>
+      <p class="sec-script gilt"><span data-es>te invita a celebrar con nosotros</span><span data-en>invites you to celebrate with us</span></p>
+      <div class="diamond" aria-hidden="true">◆</div>
+      <p class="frank-text" data-es>
+        Frank tiene algo que decirte… y al final, una canción que preparó especialmente para ti.
+        Sube el volumen y escúchala hasta el final.
+      </p>
+      <p class="frank-text" data-en>
+        Frank has something to tell you… and at the end, a song he prepared just for you.
+        Turn the volume up and listen to the very end.
+      </p>
+      <p class="frank-hint" id="frank-hint">
+        <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span data-es>La canción empieza cuando Frank la anuncia</span><span data-en>The song begins when Frank announces it</span>
+      </p>
+    </div>
+  </div>
+  <audio id="frank-song" preload="none" src="assets/audio/song-placeholder.mp3"></audio>
+</section>
+
+<div class="song-pill" id="song-pill" hidden>
+  <span class="eq on" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <span class="song-name"><span data-es>La canción de Frank</span><span data-en>Frank's song</span></span>
+  <button type="button" id="song-toggle" aria-pressed="true">
+    <span class="pause"><span data-es>Pausar</span><span data-en>Pause</span></span>
+    <span class="play"><span data-es>Reanudar</span><span data-en>Resume</span></span>
+  </button>
+</div>
 
 <!-- ========== 3 · LOS DETALLES ========== -->
 <section id="detalles">
@@ -1046,6 +1165,16 @@ document.documentElement.classList.add('js');
     if(portraitMQ.addEventListener){ portraitMQ.addEventListener('change', pick); }
     else if(portraitMQ.addListener){ portraitMQ.addListener(pick); }
     document.addEventListener('visibilitychange', function(){ if(!document.hidden){ var p = v.play(); if(p && p.catch){ p.catch(function(){}); } } });
+    /* only decode the hero loop while it is on screen */
+    if('IntersectionObserver' in window){
+      var heroIO = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ var p = v.play(); if(p && p.catch){ p.catch(function(){}); } }
+          else { v.pause(); }
+        });
+      }, { threshold: 0.05 });
+      heroIO.observe(v);
+    }
   }
 
   /* drifting petals */
@@ -1127,7 +1256,7 @@ document.documentElement.classList.add('js');
     }
     v.addEventListener('timeupdate', function(){ if(v.duration){ bar.style.width = (v.currentTime / v.duration * 100).toFixed(1) + '%'; } });
     v.addEventListener('ended', function(){
-      done = true; film.classList.add('done'); unlock();
+      done = true; film.classList.add('done'); unlock(); document.dispatchEvent(new CustomEvent('story:done'));
       v.loop = true; var p = v.play(); if(p && p.catch){ p.catch(function(){}); }
     });
     v.addEventListener('error', unlock);
@@ -1145,6 +1274,79 @@ document.documentElement.classList.add('js');
       }, { threshold: 0.55 });
       fio.observe(film);
     }else{ started = true; v.controls = true; }
+  })();
+
+
+  /* Frank: glides into view when the story ends, plays on his own, song at 13s with a 4s fade */
+  (function(){
+    var sec = document.getElementById('frank'), v = document.getElementById('frank-video'), song = document.getElementById('frank-song');
+    if(!sec || !v || !song) return;
+    var tap = document.getElementById('frank-tap'), replay = document.getElementById('frank-replay'), hint = document.getElementById('frank-hint');
+    var pill = document.getElementById('song-pill'), toggle = document.getElementById('song-toggle');
+    var story = document.getElementById('story-video'), storySnd = document.querySelector('.film-sound');
+    var SONG_AT = 13, FADE = 4;
+    var played = false, songStarted = false, fading = null;
+
+    /* warm up Frank and the song once the story film is actually playing, so both start instantly */
+    var warmed = false;
+    function warm(){ if(warmed) return; warmed = true; v.preload = 'auto'; song.preload = 'auto'; try{ v.load(); song.load(); }catch(e){} }
+    if(story){ story.addEventListener('playing', warm, { once: true }); }
+    function quietStory(){ if(story){ story.muted = true; } if(storySnd){ storySnd.setAttribute('aria-pressed', 'false'); } }
+    function fadeIn(){
+      var t0 = performance.now(); song.volume = 0;
+      (function step(t){
+        var k = Math.min(1, (t - t0) / (FADE * 1000)); song.volume = k * k;
+        if(k < 1){ fading = requestAnimationFrame(step); }
+      })(t0);
+    }
+    function showPill(){ pill.hidden = false; pill.classList.remove('paused'); toggle.setAttribute('aria-pressed', 'true'); hint.classList.add('live'); hint.querySelector('.eq').classList.add('on'); }
+    function startSong(){
+      if(songStarted) return; songStarted = true;
+      var p = song.play();
+      if(p && p.then){ p.then(function(){ fadeIn(); showPill(); }).catch(function(){ songStarted = false; }); }
+      else { fadeIn(); showPill(); }
+    }
+    song.addEventListener('ended', function(){ pill.hidden = true; hint.classList.remove('live'); hint.querySelector('.eq').classList.remove('on'); });
+    toggle.addEventListener('click', function(){
+      if(song.paused){ song.play(); pill.classList.remove('paused'); toggle.setAttribute('aria-pressed', 'true'); }
+      else { song.pause(); pill.classList.add('paused'); toggle.setAttribute('aria-pressed', 'false'); }
+    });
+
+    v.addEventListener('timeupdate', function(){ if(!songStarted && !v.muted && v.currentTime >= SONG_AT){ startSong(); } });
+    v.addEventListener('ended', function(){ replay.hidden = false; sec.classList.remove('playing'); });
+    v.addEventListener('play', function(){ replay.hidden = true; sec.classList.add('playing'); });
+
+    function playFrank(withSound){
+      warm(); quietStory(); v.muted = !withSound;
+      var p = v.play();
+      if(p && p.then){
+        p.then(function(){ played = true; tap.hidden = withSound; if(!withSound){ tap.classList.add('sound'); } })
+         .catch(function(){ if(withSound){ playFrank(false); } else { tap.hidden = false; } });
+      } else { played = true; tap.hidden = false; }
+    }
+    tap.addEventListener('click', function(){
+      tap.hidden = true; v.muted = false; quietStory();
+      if(v.paused){ v.currentTime = 0; v.play(); }
+      if(v.currentTime >= SONG_AT){ startSong(); }
+    });
+    replay.addEventListener('click', function(){ v.currentTime = 0; v.muted = false; v.play(); });
+
+    function centre(){
+      var r = sec.getBoundingClientRect(), top = window.scrollY + r.top;
+      var target = r.height > window.innerHeight ? top - Math.max(0, (window.innerHeight - Math.min(r.height, window.innerHeight)) / 2) : top + r.height/2 - window.innerHeight/2;
+      window.scrollTo({ top: Math.max(0, target), behavior: reduce ? 'auto' : 'smooth' });
+    }
+    document.addEventListener('story:done', function(){
+      if(played) return;
+      centre();
+      setTimeout(function(){ playFrank(true); }, reduce ? 0 : 900);
+    });
+    if('IntersectionObserver' in window){
+      var fio = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting && !played){ played = true; playFrank(true); fio.disconnect(); } });
+      }, { threshold: 0.6 });
+      fio.observe(document.getElementById('frank-frame'));
+    }
   })();
 
   /* scroll reveal */
