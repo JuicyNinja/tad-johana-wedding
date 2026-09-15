@@ -1,0 +1,5 @@
+# large working files that are not part of the site
+source-assets/
+deploy/
+.claude/
+__pycache__/
