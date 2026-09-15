@@ -3,3 +3,6 @@ source-assets/
 deploy/
 .claude/
 __pycache__/
+# build sources stay on this machine; only the finished site is deployed
+original-index.html
+tools/

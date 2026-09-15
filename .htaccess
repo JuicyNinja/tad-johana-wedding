@@ -1,5 +1,0 @@
-# keep the build sources private on the server; the site itself is index.html + assets
-<FilesMatch "^(original-index\.html)$">
-  Require all denied
-</FilesMatch>
-RedirectMatch 403 ^/tools/.*$
