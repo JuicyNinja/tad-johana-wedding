@@ -424,6 +424,13 @@ html[lang="en"] [data-es]{display:none!important}
   .cd-lab{font-size:.7rem;letter-spacing:.12em}
 }
 
+/* email fallback under the RSVP buttons */
+.mailfall{margin-top:.9rem;padding:1rem 1.1rem;border:1px solid rgba(227,190,106,.22)}
+.mailfall p{font-family:var(--body);font-size:.98rem;color:var(--cream-dim);line-height:1.6;margin-bottom:.7rem}
+.mailfall textarea{width:100%;background:rgba(11,21,51,.4);border:1px solid var(--line);color:var(--cream);font:1rem/1.6 var(--body);padding:.8rem .9rem;border-radius:0;resize:vertical}
+.mailfall .btn{margin-top:.6rem}
+.mailfall .copied{color:var(--gold);margin:.7rem 0 0;font-size:.95rem}
+
 /* footer bouquet */
 footer{position:relative;padding-top:3rem}
 .bouquet{display:block;width:min(88vw,560px);height:auto;margin:0 auto 1.6rem;pointer-events:none;user-select:none;
@@ -884,6 +891,13 @@ footer{position:relative;padding-top:3rem}
       <button type="button" class="btn btn-ghost" id="rsvp-email">
         <span data-es>Enviar por correo</span><span data-en>Send by email</span>
       </button>
+      <div class="mailfall" id="mailfall" hidden>
+        <p data-es>Si tu correo no se abrió, copia tu respuesta y envíala a <a class="maplink" href="mailto:johanacastellanos11@gmail.com">johanacastellanos11@gmail.com</a>.</p>
+        <p data-en>If your mail app did not open, copy your response and send it to <a class="maplink" href="mailto:johanacastellanos11@gmail.com">johanacastellanos11@gmail.com</a>.</p>
+        <textarea id="mailtext" readonly rows="5"></textarea>
+        <button type="button" class="btn btn-ghost" id="rsvp-copy"><span data-es>Copiar respuesta</span><span data-en>Copy response</span></button>
+        <p class="copied" id="copied" hidden><span data-es>Copiado. Pégalo en un correo nuevo.</span><span data-en>Copied. Paste it into a new email.</span></p>
+      </div>
       <a class="btn btn-ghost" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Matrimonio%20de%20Tad%20%26%20Johana&amp;dates=20261121T210000Z%2F20261122T060000Z&amp;details=Ceremonia%204%3A00%20PM%20Parroquia%20San%20Alfonso%20Mar%C3%ADa%20de%20Ligorio.%20Recepci%C3%B3n%207%3A00%20PM%20JW%20Marriott%20Bogot%C3%A1.&amp;location=Av.%20Carrera%2028%20%2339-27%2C%20Bogot%C3%A1" target="_blank" rel="noopener">
         <span data-es>Guardar la fecha</span><span data-en>Add to calendar</span>
       </a>
@@ -988,7 +1002,17 @@ var RSVP_EMAIL = "johanacastellanos11@gmail.com";
   document.getElementById('rsvp-email').addEventListener('click', function(){
     var m = compose(); if(!m) return;
     var subject = m.en ? 'RSVP — Tad & Johana' : 'Confirmación — Tad y Johana';
-    window.location.href = 'mailto:' + RSVP_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(m.text);
+    var fall = document.getElementById('mailfall'), ta = document.getElementById('mailtext');
+    ta.value = m.text; fall.hidden = false; document.getElementById('copied').hidden = true;
+    var a = document.createElement('a');
+    a.href = 'mailto:' + RSVP_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(m.text);
+    a.style.display = 'none'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  });
+  document.getElementById('rsvp-copy').addEventListener('click', function(){
+    var ta = document.getElementById('mailtext'), ok = document.getElementById('copied');
+    function done(){ ok.hidden = false; }
+    function legacy(){ ta.select(); try{ document.execCommand('copy'); }catch(e){} done(); }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(ta.value).then(done, legacy); } else { legacy(); }
   });
 })();
 
