@@ -1106,7 +1106,8 @@ var RSVP_EMAIL = "johanacastellanos11@gmail.com";
   /* first visit: ask for the language on a floral card; picking it is also the tap that lets the videos play with sound */
   var lp = document.getElementById('langpick');
   if(lp){
-    if(saved){ lp.remove(); }
+    var force = /[?&#]welcome/.test(window.location.href);   /* ...?welcome shows the card again, for checking it */
+    if(saved && !force){ lp.remove(); }
     else{
       lp.hidden = false; document.documentElement.classList.add('lp-open');
       var first = lp.querySelector('button[data-lang]'); if(first){ setTimeout(function(){ first.focus(); }, 400); }
