@@ -1279,7 +1279,7 @@ document.documentElement.classList.add('js');
     if(!v || !film) return;
     var tap = film.querySelector('.film-tap'), snd = film.querySelector('.film-sound'), bar = film.querySelector('.film-progress');
     var small = Math.max(window.innerWidth, window.innerHeight) < 1100;
-    v.src = 'assets/video/story' + (small ? '-720' : '') + '.mp4';
+    v.src = 'assets/video/story' + (small ? '-720' : '') + '.mp4?v=2a69fd89';
     var done = false, locked = false, started = false, lockY = 0;
     var keys = {32:1,33:1,34:1,35:1,36:1,38:1,40:1};
     function prevent(e){ e.preventDefault(); }
@@ -1353,7 +1353,7 @@ document.documentElement.classList.add('js');
     var tap = document.getElementById('frank-tap'), replay = document.getElementById('frank-replay'), hint = document.getElementById('frank-hint');
     var pill = document.getElementById('song-pill'), toggle = document.getElementById('song-toggle');
     var story = document.getElementById('story-video'), storySnd = document.querySelector('.film-sound');
-    var FR = {"es": {"src": "assets/video/frank-es.mp4?v=db98e298", "poster": "assets/img/frank-es-poster.jpg?v=b557c63c", "song_at": 16}, "en": {"src": "assets/video/frank-en.mp4?v=ac2def45", "poster": "assets/img/frank-en-poster.jpg?v=6e768d4c", "song_at": 13}};
+    var FR = {"es": {"src": "assets/video/frank-es.mp4?v=db98e298", "poster": "assets/img/frank-es-poster.jpg?v=b557c63c", "song_at": 16}, "en": {"src": "assets/video/frank-en.mp4?v=46d41942", "poster": "assets/img/frank-en-poster.jpg?v=b32fa189", "song_at": 16}};
     var FADE = 4, SONG_AT = 13, cur = null;
     var played = false, songStarted = false, fading = null;
     function lang(){ return document.documentElement.lang === 'en' ? 'en' : 'es'; }
