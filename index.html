@@ -531,6 +531,49 @@ footer{position:relative;padding-top:3rem}
 .song-pill button[aria-pressed="true"] .play,.song-pill button[aria-pressed="false"] .pause{display:none}
 .song-pill.paused .eq i{animation-play-state:paused;opacity:.5}
 @media (prefers-reduced-motion:reduce){.frank-tap .ring,.eq.on i{animation:none}}
+
+/* ---------- first-visit language welcome ---------- */
+.langpick{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:1.2rem;
+  background:radial-gradient(ellipse at 50% 40%,rgba(18,34,92,.55),rgba(6,11,31,.9) 70%);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);animation:lpfade .5s ease}
+.langpick[hidden]{display:none}
+html.lp-open{overflow:hidden}
+@keyframes lpfade{from{opacity:0}to{opacity:1}}
+.langpick-card{position:relative;width:min(100%,26rem);animation:lpcard .9s cubic-bezier(.2,.7,.3,1)}
+@keyframes lpcard{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:none}}
+.lp-inner{position:relative;z-index:1;text-align:center;padding:2.4rem 1.7rem 2rem;
+  border:1px solid rgba(227,190,106,.65);background:linear-gradient(180deg,#0E1A44 0%,#0B1533 100%);
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 6px rgba(6,11,31,.4)}
+.lp-inner::after{content:"";position:absolute;inset:6px;border:1px solid rgba(227,190,106,.25);pointer-events:none}
+.lp-corner{position:absolute;width:11rem;height:auto;z-index:2;pointer-events:none;filter:drop-shadow(0 12px 24px rgba(0,0,0,.55));
+  animation:lpbloom 1.2s cubic-bezier(.2,.7,.3,1) .2s both}
+.lp-corner-l{left:-3.4rem;top:-3.2rem}
+.lp-corner-r{right:-3.4rem;bottom:-3.2rem;transform:rotate(180deg)}
+@keyframes lpbloom{from{opacity:0;transform:scale(.7)}to{opacity:1}}
+.lp-corner-r{animation-name:lpbloom-r}
+@keyframes lpbloom-r{from{opacity:0;transform:rotate(180deg) scale(.7)}to{opacity:1;transform:rotate(180deg)}}
+.lp-garland{width:min(76%,15rem);height:auto;margin:0 auto .9rem;display:block}
+.lp-names{font-family:var(--serif);font-weight:300;font-size:1.55rem;letter-spacing:.06em;text-transform:uppercase;color:var(--cream)}
+.lp-names .gilt{font-family:var(--script);text-transform:none;font-size:1.3em;padding:0 .15em;vertical-align:-.05em}
+.lp-title{font-family:var(--script);font-weight:600;font-size:clamp(1.9rem,7vw,2.5rem);line-height:1.15;margin-top:.5rem}
+.lp-sub{margin-top:.7rem;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim)}
+.lp-sub i,.lp-note i{font-style:normal;color:var(--gold);padding:0 .3em}
+.lp-btns{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1.6rem}
+.lp-btn{display:flex;align-items:center;justify-content:center;gap:.6rem;padding:.95rem .6rem;cursor:pointer;
+  border:1px solid rgba(227,190,106,.7);background:rgba(227,190,106,.06);color:var(--cream);
+  font:500 .9rem/1 var(--sans);letter-spacing:.1em;transition:all .25s ease}
+.lp-btn .lp-flag{font-size:.62rem;letter-spacing:.18em;color:var(--gold);border:1px solid rgba(227,190,106,.5);padding:.28rem .35rem;line-height:1}
+.lp-btn:hover,.lp-btn:focus-visible{background:linear-gradient(135deg,var(--gold-pale),var(--gold) 50%,var(--gold-deep));color:#0B1533;border-color:transparent;transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.45)}
+.lp-btn:hover .lp-flag,.lp-btn:focus-visible .lp-flag{color:#0B1533;border-color:rgba(11,21,51,.45)}
+.lp-note{margin-top:1.3rem;font-size:.68rem;letter-spacing:.12em;color:rgba(185,193,220,.65)}
+@media (max-width:420px){
+  .lp-inner{padding:2rem 1.2rem 1.6rem}
+  .lp-corner{width:8.5rem}
+  .lp-corner-l{left:-2.4rem;top:-2.4rem}.lp-corner-r{right:-2.4rem;bottom:-2.4rem}
+  .lp-btns{gap:.5rem}
+  .lp-btn{padding:.9rem .4rem;font-size:.84rem}
+}
+@media (prefers-reduced-motion:reduce){.langpick,.langpick-card,.lp-corner{animation:none}}
 </style>
 </head>
 <body>
@@ -539,6 +582,24 @@ footer{position:relative;padding-top:3rem}
 <div class="petals" id="petals" aria-hidden="true"></div>
 
 
+
+<div class="langpick" id="langpick" hidden role="dialog" aria-modal="true" aria-labelledby="langpick-title">
+  <div class="langpick-card">
+    <img class="lp-corner lp-corner-l" src="assets/img/corner.webp" alt="" aria-hidden="true" decoding="async">
+    <img class="lp-corner lp-corner-r" src="assets/img/corner.webp" alt="" aria-hidden="true" decoding="async">
+    <div class="lp-inner">
+      <img class="lp-garland" src="assets/img/garland.webp" alt="" aria-hidden="true" decoding="async">
+      <p class="lp-names">Tad <span class="gilt">&amp;</span> Johana</p>
+      <h2 class="lp-title gilt" id="langpick-title">¡Bienvenidos! · Welcome!</h2>
+      <p class="lp-sub">Elige tu idioma <i>·</i> Pick your language</p>
+      <div class="lp-btns">
+        <button type="button" class="lp-btn" data-lang="es"><span class="lp-flag" aria-hidden="true">ES</span>Español</button>
+        <button type="button" class="lp-btn" data-lang="en"><span class="lp-flag" aria-hidden="true">EN</span>English</button>
+      </div>
+      <p class="lp-note">Puedes cambiarlo arriba a la derecha <i>·</i> You can change it top right</p>
+    </div>
+  </div>
+</div>
 <nav class="lang" aria-label="Idioma / Language">
   <button type="button" data-lang="es" aria-pressed="true">ES</button>
   <i>/</i>
@@ -709,8 +770,8 @@ footer{position:relative;padding-top:3rem}
         <em data-en>JW Marriott Bogotá · main room</em>
       </p>
       <p class="t">Calle 73 # 8-60 · Zona G, Bogotá D.C.</p>
-      <p class="t" data-es>Recepción solo para adultos (mayores de 18).</p>
-      <p class="t" data-en>The reception is adults only (18+).</p>
+      <p class="t" data-es>Celebración solo para adultos (mayores de 18).</p>
+      <p class="t" data-en>Adults only (18+).</p>
       <a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=JW+Marriott+Bogota+Calle+73+%238-60" target="_blank" rel="noopener">
         <span data-es>Ver mapa</span><span data-en>View map</span>
       </a>
@@ -719,10 +780,10 @@ footer{position:relative;padding-top:3rem}
     <div class="detail">
       <h3 data-es>Vestimenta</h3>
       <h3 data-en>Dress code</h3>
-      <p class="strong" data-es>Elegante y sobrio</p>
-      <p class="strong" data-en>Elegant and understated</p>
-      <p class="t" data-es>Semi-formal · cocktail. Evitar el blanco. Zapato cómodo para el baile.</p>
-      <p class="t" data-en>Semi-formal · cocktail. Please avoid white. Comfortable shoes for dancing.</p>
+      <p class="strong" data-es>Formal</p>
+      <p class="strong" data-en>Formal</p>
+      <p class="t" data-es>Vestido largo o de cóctel elegante para ellas; traje oscuro con corbata para ellos. Evitar el blanco. Zapato cómodo para el baile.</p>
+      <p class="t" data-en>Long or elegant cocktail dress for women; dark suit and tie for men. Please avoid white. Comfortable shoes for dancing.</p>
     </div>
 
     <div class="detail">
@@ -907,8 +968,8 @@ footer{position:relative;padding-top:3rem}
 
       <details>
         <summary><span data-es>¿Puedo llevar niños?</span><span data-en>Can I bring children?</span></summary>
-        <p data-es>Los niños son bienvenidos en la ceremonia en la iglesia. Por favor no los lleves a la recepción: la cena y el baile son solo para adultos.</p>
-        <p data-en>Children are welcome at the ceremony in the church. Please do not bring them to the reception: dinner and dancing are adults only.</p>
+        <p data-es>Con mucho cariño, esta celebración es solo para adultos: tanto la ceremonia en la iglesia como la recepción. Gracias por entenderlo.</p>
+        <p data-en>With love, this celebration is adults only: both the church ceremony and the reception. Thank you for understanding.</p>
       </details>
 
       <details>
@@ -930,8 +991,9 @@ footer{position:relative;padding-top:3rem}
       </details>
 
       <div class="tags">
-        <span class="tag" data-es>Elegante y sobrio</span><span class="tag" data-en>Elegant &amp; understated</span>
+        <span class="tag" data-es>Formal</span><span class="tag" data-en>Formal</span>
         <span class="tag" data-es>Sin blanco</span><span class="tag" data-en>No white</span>
+        <span class="tag" data-es>Solo adultos</span><span class="tag" data-en>Adults only</span>
         <span class="tag" data-es>Zapato cómodo</span><span class="tag" data-en>Comfortable shoes</span>
       </div>
     </div>
@@ -973,18 +1035,6 @@ footer{position:relative;padding-top:3rem}
         </div>
       </fieldset>
 
-      <fieldset class="field" id="grp-acomp">
-        <span class="legend" data-es>Acompañante · solo recepción y cena</span>
-        <span class="legend" data-en>Plus one · reception and dinner only</span>
-        <div class="opts">
-          <label class="opt"><input type="radio" name="acomp" value="0" checked>
-            <span data-es>Voy sin acompañante</span><span data-en>Just me</span></label>
-          <label class="opt"><input type="radio" name="acomp" value="1">
-            <span data-es>Con un acompañante (+1)</span><span data-en>With a plus one (+1)</span></label>
-        </div>
-        <p class="menu-note" data-es>Máximo un acompañante, mayor de 18 años. Los niños son bienvenidos únicamente en la ceremonia.</p>
-        <p class="menu-note" data-en>One companion at most, 18 or older. Children are welcome at the ceremony only.</p>
-      </fieldset>
 
       <div class="field" id="grp-menu">
         <span class="legend" data-es>Menú</span>
@@ -1053,6 +1103,24 @@ var RSVP_EMAIL = "johanacastellanos11@gmail.com";
   var saved; try{ saved = localStorage.getItem('jt-lang'); }catch(e){}
   if(saved){ set(saved); }
   else if((navigator.language||'').slice(0,2) === 'en'){ set('en'); }
+  /* first visit: ask for the language on a floral card; picking it is also the tap that lets the videos play with sound */
+  var lp = document.getElementById('langpick');
+  if(lp){
+    if(saved){ lp.remove(); }
+    else{
+      lp.hidden = false; document.documentElement.classList.add('lp-open');
+      var first = lp.querySelector('button[data-lang]'); if(first){ setTimeout(function(){ first.focus(); }, 400); }
+      Array.prototype.forEach.call(lp.querySelectorAll('button[data-lang]'), function(b){
+        b.addEventListener('click', function(){
+          set(b.dataset.lang);
+          lp.style.transition = 'opacity .45s ease'; lp.style.opacity = '0';
+          document.documentElement.classList.remove('lp-open');
+          setTimeout(function(){ lp.remove(); }, 460);
+        });
+      });
+    }
+  }
+
 })();
 
 /* ---------- countdown to 21 Nov 2026, 4:00 PM Bogotá (UTC-5) ---------- */
@@ -1077,7 +1145,7 @@ var RSVP_EMAIL = "johanacastellanos11@gmail.com";
 /* ---------- rsvp ---------- */
 (function(){
   var form = document.getElementById('rsvp-form');
-  var groups = ['grp-acomp','grp-menu','grp-diet','grp-hotel'];
+  var groups = ['grp-menu','grp-diet','grp-hotel'];
 
   function attending(){
     return form.querySelector('input[name=asiste]:checked').value;
@@ -1102,8 +1170,6 @@ var RSVP_EMAIL = "johanacastellanos11@gmail.com";
     var a = attending();
     if(a === 'ambos'){
       lines.push(en ? 'Attending: ceremony and reception' : 'Asisto: ceremonia y recepción');
-      var plus = form.querySelector('input[name=acomp]:checked').value === '1';
-      lines.push(en ? ('Plus one: ' + (plus ? 'yes (1 adult)' : 'no')) : ('Acompañante: ' + (plus ? 'sí (1 adulto)' : 'no')));
       var dieta = form.dieta.value.trim();
       if(dieta){ lines.push((en ? 'Dietary: ' : 'Restricciones: ') + dieta); }
       if(form.hotel.checked){ lines.push(en ? 'Staying at the JW Marriott' : 'Me hospedo en el JW Marriott'); }
