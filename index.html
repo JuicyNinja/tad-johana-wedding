@@ -494,6 +494,15 @@ footer{position:relative;padding-top:3rem}
   -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .frank-replay:hover{border-color:var(--gold);color:var(--gold)}
 .frank-replay[hidden]{display:none}
+.frank-sound{position:absolute;right:.7rem;top:.7rem;z-index:3;display:flex;align-items:center;gap:.55rem;border:1px solid var(--gold);
+  background:rgba(6,11,31,.72);color:var(--gold);font:600 .72rem/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:.6rem .8rem;cursor:pointer;
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 0 0 0 rgba(227,190,106,.5);animation:soundpulse 1.8s ease-out infinite}
+.frank-sound .dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--gold)}
+.frank-sound:hover{background:linear-gradient(135deg,var(--gold-pale),var(--gold) 50%,var(--gold-deep));color:#0B1533}
+.frank-sound:hover .dot{background:#0B1533}
+.frank-sound[hidden]{display:none}
+@keyframes soundpulse{0%{box-shadow:0 0 0 0 rgba(227,190,106,.5)}100%{box-shadow:0 0 0 16px rgba(227,190,106,0)}}
+@media (prefers-reduced-motion:reduce){.frank-sound{animation:none}}
 .frank-copy{text-align:left}
 .frank-copy .sec-title,.frank-copy .sec-script{text-align:left}
 .frank-copy .diamond{text-align:left;margin:1.2rem 0 1.6rem}
@@ -703,6 +712,10 @@ html.lp-open{overflow:hidden}
         <button type="button" class="frank-tap" id="frank-tap" hidden>
           <span class="ring" aria-hidden="true"></span>
           <span class="lbl"><span data-es>Toca para escuchar a Frank</span><span data-en>Tap to hear from Frank</span></span>
+        </button>
+        <button type="button" class="frank-sound" id="frank-sound" hidden aria-label="Sound">
+          <span class="dot" aria-hidden="true"></span>
+          <span data-es>Activar sonido</span><span data-en>Sound on</span>
         </button>
         <button type="button" class="frank-replay" id="frank-replay" hidden>
           <span data-es>Ver de nuevo</span><span data-en>Watch again</span>
@@ -1402,20 +1415,29 @@ document.documentElement.classList.add('js');
     v.addEventListener('ended', function(){ replay.hidden = false; sec.classList.remove('playing'); });
     v.addEventListener('play', function(){ replay.hidden = true; sec.classList.add('playing'); });
 
+    var snd = document.getElementById('frank-sound');
     function playFrank(withSound){
       warm(); quietStory(); v.muted = !withSound;
       var p = v.play();
       if(p && p.then){
-        p.then(function(){ played = true; tap.hidden = withSound; if(!withSound){ tap.classList.add('sound'); } })
+        p.then(function(){ played = true; tap.hidden = true; snd.hidden = withSound; })
          .catch(function(){ if(withSound){ playFrank(false); } else { tap.hidden = false; } });
-      } else { played = true; tap.hidden = false; }
+      } else { played = true; snd.hidden = withSound; }
     }
+    /* sound pill: turn sound on and start Frank over so nothing he says is missed */
+    snd.addEventListener('click', function(){
+      snd.hidden = true; v.muted = false; quietStory();
+      if(v.duration && v.currentTime < v.duration - 1.5){ v.currentTime = 0; }
+      var p = v.play(); if(p && p.catch){ p.catch(function(){}); }
+      if(v.currentTime >= SONG_AT){ startSong(); }
+    });
+    v.addEventListener('volumechange', function(){ if(!v.muted){ snd.hidden = true; } });
     tap.addEventListener('click', function(){
-      tap.hidden = true; v.muted = false; quietStory();
+      tap.hidden = true; snd.hidden = true; v.muted = false; quietStory();
       if(v.paused){ v.currentTime = 0; v.play(); }
       if(v.currentTime >= SONG_AT){ startSong(); }
     });
-    replay.addEventListener('click', function(){ v.currentTime = 0; v.muted = false; v.play(); });
+    replay.addEventListener('click', function(){ v.currentTime = 0; v.muted = false; snd.hidden = true; v.play(); });
 
     function centre(){
       var r = sec.getBoundingClientRect(), top = window.scrollY + r.top;
