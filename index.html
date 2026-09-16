@@ -380,7 +380,7 @@ html,body{overflow-x:clip}
 }
 
 /* ---------- story film ---------- */
-.photos{display:block;margin-top:3rem}
+.photos{display:block;margin:0 0 3rem}
 .film{position:relative;width:min(100%,40rem);margin:0 auto;aspect-ratio:7/4;border:1px solid var(--line);
   background:rgba(6,11,31,.4);overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.45);transition:box-shadow .6s ease}
 .film video{width:100%;height:100%;object-fit:cover;display:block}
@@ -395,7 +395,7 @@ html,body{overflow-x:clip}
 .film-progress{position:absolute;left:0;bottom:0;z-index:2;height:2px;width:0;background:linear-gradient(90deg,var(--gold-deep),var(--gold-pale));transition:width .25s linear}
 .film.done .film-progress{opacity:0}
 html.film-lock{scroll-behavior:auto}
-@media (max-width:760px){.photos{margin-top:2.4rem}.film-sound{font-size:.78rem}}
+@media (max-width:760px){.photos{margin-bottom:2.4rem}.film-sound{font-size:.78rem}}
 
 .program .n{min-width:6.4rem;white-space:nowrap}
 @media (max-width:420px){.program .n{font-size:1.5rem;min-width:5.6rem}}
@@ -665,17 +665,6 @@ html.lp-open{overflow:hidden}
     <p class="sec-script gilt" data-en>And yes… we mean it!</p>
     <div class="diamond" aria-hidden="true">◆</div>
 
-    <p class="story-copy" data-es>
-      Después de mucho amor, risas, aventuras y un par de locuras, decidimos dar el siguiente
-      gran paso. Queremos compartir este momento tan especial con las personas que hacen la vida
-      más divertida, más bonita y mucho más especial.
-    </p>
-    <p class="story-copy" data-en>
-      After a lot of love, laughter, adventures and a couple of wild ideas, we decided to take
-      the next big step. We want to share this moment with the people who make life more fun,
-      more beautiful and far more meaningful.
-    </p>
-
     <div class="photos">
       <div class="film" id="film">
         <video id="story-video" playsinline muted preload="metadata" poster="assets/img/story-poster.webp?v=1923879b" aria-label="Tad y Johana"></video>
@@ -687,6 +676,18 @@ html.lp-open{overflow:hidden}
         <div class="film-progress" aria-hidden="true"></div>
       </div>
     </div>
+
+    <p class="story-copy" data-es>
+      Después de mucho amor, risas, aventuras y un par de locuras, decidimos dar el siguiente
+      gran paso. Queremos compartir este momento tan especial con las personas que hacen la vida
+      más divertida, más bonita y mucho más especial.
+    </p>
+    <p class="story-copy" data-en>
+      After a lot of love, laughter, adventures and a couple of wild ideas, we decided to take
+      the next big step. We want to share this moment with the people who make life more fun,
+      more beautiful and far more meaningful.
+    </p>
+
   </div>
 </section>
 
