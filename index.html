@@ -696,7 +696,7 @@ html.lp-open{overflow:hidden}
     <div class="frank-stage">
       <div class="frank-glow" aria-hidden="true"></div>
       <div class="frank-frame" id="frank-frame">
-        <video id="frank-video" src="assets/video/frank.mp4" playsinline preload="metadata" poster="assets/img/frank-poster.jpg" aria-label="Frank"></video>
+        <video id="frank-video" playsinline preload="metadata" aria-label="Frank"></video>
         <button type="button" class="frank-tap" id="frank-tap" hidden>
           <span class="ring" aria-hidden="true"></span>
           <span class="lbl"><span data-es>Toca para escuchar a Frank</span><span data-en>Tap to hear from Frank</span></span>
@@ -1343,15 +1343,24 @@ document.documentElement.classList.add('js');
   })();
 
 
-  /* Frank: glides into view when the story ends, plays on his own, song at 13s with a 4s fade */
+  /* Frank: glides into view when the story ends, plays on his own; one cut per language, song cue per cut, 4s fade */
   (function(){
     var sec = document.getElementById('frank'), v = document.getElementById('frank-video'), song = document.getElementById('frank-song');
     if(!sec || !v || !song) return;
     var tap = document.getElementById('frank-tap'), replay = document.getElementById('frank-replay'), hint = document.getElementById('frank-hint');
     var pill = document.getElementById('song-pill'), toggle = document.getElementById('song-toggle');
     var story = document.getElementById('story-video'), storySnd = document.querySelector('.film-sound');
-    var SONG_AT = 13, FADE = 4;
+    var FR = {"es": {"src": "assets/video/frank.mp4", "poster": "assets/img/frank-poster.jpg", "song_at": 13}, "en": {"src": "assets/video/frank.mp4", "poster": "assets/img/frank-poster.jpg", "song_at": 13}};
+    var FADE = 4, SONG_AT = 13, cur = null;
     var played = false, songStarted = false, fading = null;
+    function lang(){ return document.documentElement.lang === 'en' ? 'en' : 'es'; }
+    function load(l){
+      if(cur === l) return; cur = l;
+      v.poster = FR[l].poster; v.src = FR[l].src; SONG_AT = FR[l].song_at;
+      if(played){ v.pause(); replay.hidden = false; sec.classList.remove('playing'); }
+    }
+    load(lang());
+    new MutationObserver(function(){ load(lang()); }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 
     /* warm up Frank and the song once the story film is actually playing, so both start instantly */
     var warmed = false;
