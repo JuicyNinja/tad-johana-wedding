@@ -1,9 +1,11 @@
 name: Deploy to Cloudways
 
-# Every push to master asks Cloudways to pull the repository into the application.
-# Needs two repository secrets: CLOUDWAYS_EMAIL and CLOUDWAYS_API_KEY
-# (Cloudways panel -> account menu -> API).  Server and app ids come from the
-# application's cloudwaysapps.com hostname: phpstack-<server>-<app>.
+# Every push to master uploads the site to the Cloudways application over SFTP.
+# Needs three repository secrets (GitHub: Settings -> Secrets and variables -> Actions):
+#   SFTP_HOST      the server's public IP (Cloudways: application -> Access Details)
+#   SFTP_USER      an application credential username (Access Details -> Application Credentials)
+#   SFTP_PASSWORD  that credential's password
+# Application credentials log straight into the application folder, so "public_html/" is the site root.
 
 on:
   push:
@@ -11,46 +13,35 @@ on:
   workflow_dispatch:
 
 jobs:
-  pull:
+  upload:
     runs-on: ubuntu-latest
     steps:
-      - name: Ask Cloudways to pull the latest commit
+      - name: Check the secrets are present
         env:
-          CLOUDWAYS_EMAIL: ${{ secrets.CLOUDWAYS_EMAIL }}
-          CLOUDWAYS_API_KEY: ${{ secrets.CLOUDWAYS_API_KEY }}
-          SERVER_ID: "747420"
-          APP_ID: "6673858"
-          GIT_URL: "git@github.com:JuicyNinja/tad-johana-wedding.git"
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
         run: |
-          if [ -z "$CLOUDWAYS_EMAIL" ] || [ -z "$CLOUDWAYS_API_KEY" ]; then
-            echo "::error::Secrets missing. Add CLOUDWAYS_EMAIL and CLOUDWAYS_API_KEY under Settings -> Secrets and variables -> Actions."
-            exit 1
-          fi
-          echo "Email secret length: ${#CLOUDWAYS_EMAIL}, key length: ${#CLOUDWAYS_API_KEY}"
+          for v in SFTP_HOST SFTP_USER SFTP_PASSWORD; do
+            if [ -z "${!v}" ]; then echo "::error::Secret $v is missing. Add it under Settings -> Secrets and variables -> Actions."; exit 1; fi
+          done
+          echo "Secrets present (host length ${#SFTP_HOST}, user length ${#SFTP_USER})."
 
-          echo "== 1. Sign in to the Cloudways API =="
-          AUTH=$(curl -sS -w '\nHTTP %{http_code}' -X POST https://api.cloudways.com/api/v1/oauth/access_token \
-            --data-urlencode "email=$CLOUDWAYS_EMAIL" --data-urlencode "api_key=$CLOUDWAYS_API_KEY")
-          echo "$AUTH" | sed -E 's/"access_token":"[^"]+"/"access_token":"(hidden)"/'
-          TOKEN=$(echo "$AUTH" | head -1 | python3 -c 'import sys,json
-          try:
-              print(json.load(sys.stdin).get("access_token",""))
-          except Exception:
-              print("")')
-          if [ -z "$TOKEN" ]; then
-            echo "::error::Cloudways rejected the sign-in. Check that CLOUDWAYS_EMAIL is the Cloudways login email and CLOUDWAYS_API_KEY is the key from the API page."
-            exit 1
-          fi
+      - name: Get the site files
+        uses: actions/checkout@v4
 
-          echo "== 2. Ask for a git pull =="
-          RESP=$(curl -sS -w '\nHTTP %{http_code}' -X POST https://api.cloudways.com/api/v1/git/pull \
-            -H "Authorization: Bearer $TOKEN" \
-            --data-urlencode "server_id=$SERVER_ID" --data-urlencode "app_id=$APP_ID" \
-            --data-urlencode "git_url=$GIT_URL" --data-urlencode "branch_name=master" --data-urlencode "deploy_path=")
-          echo "$RESP"
-          CODE=$(echo "$RESP" | tail -1 | sed 's/HTTP //')
-          if [ "$CODE" != "200" ]; then
-            echo "::error::Cloudways answered HTTP $CODE to the pull request. The body above says why."
-            exit 1
-          fi
-          echo "Pull requested. Cloudways runs it in the background; the site updates within a minute."
+      - name: Upload to the application's public_html over SFTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          protocol: sftp
+          port: 22
+          server: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          local-dir: ./
+          server-dir: public_html/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            .gitignore
